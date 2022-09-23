@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: webdis
+    env: docker
+    repo: https://github.com/render-examples/webdis.git
+    rootDir: webdis
+    dockerCommand: ./webdis.sh
+    healthCheckPath: /
+    envVars:
+      - key: REDIS_HOST
+        fromService:
+          type: redis
+          name: lightning
+          property: host
+      - key: REDIS_PORT
+        fromService:
+          type: redis
+          name: lightning
+          property: port
+  - type: redis
+    name: lightning
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
