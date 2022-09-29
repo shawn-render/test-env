@@ -1,11 +1,9 @@
 services:
   - type: web
-    name: webdis
-    env: docker
-    repo: https://github.com/render-examples/webdis.git
-    rootDir: webdis
-    dockerCommand: ./webdis.sh
-    healthCheckPath: /
+    name: sinatra
+    env: ruby
+    buildCommand: bundle install
+    startCommand: bundle exec ruby main.rb
     envVars:
       - key: REDIS_HOST
         fromService:
@@ -19,6 +17,11 @@ services:
           property: port
   - type: redis
     name: lightning
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
+  - type: redis
+    name: lightning-staging
     ipAllowList:
       - source: 0.0.0.0/0
         description: everywhere
